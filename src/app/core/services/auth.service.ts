@@ -2,6 +2,8 @@ import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap, map } from 'rxjs';
 
+import { environment } from '../../../environments/environment';
+
 // Matching Backend DTOs
 export interface LoginRequest {
     username: string;
@@ -27,7 +29,7 @@ export interface ApiResponse<T> {
 })
 export class AuthService {
     private http = inject(HttpClient);
-    private apiUrl = '/api/auth';
+    private apiUrl = `${environment.apiUrl}/auth`;
 
     // Signals for reactive state
     currentUser = signal<LoginResponse | null>(this.getUserFromStorage());

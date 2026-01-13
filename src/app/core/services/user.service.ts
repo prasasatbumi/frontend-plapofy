@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface User {
     id: number;
@@ -28,7 +29,7 @@ export interface Branch {
 })
 export class UserService {
     private http = inject(HttpClient);
-    private apiUrl = '/api/users';
+    private apiUrl = `${environment.apiUrl}/users`;
 
     getUsers(branchId?: number | null): Observable<User[]> {
         const params: any = {};

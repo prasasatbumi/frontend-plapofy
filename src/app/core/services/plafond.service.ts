@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface ProductInterest {
     tenor: number;
@@ -22,7 +23,7 @@ export interface Plafond {
 })
 export class PlafondService {
     private http = inject(HttpClient);
-    private apiUrl = '/api/plafonds';
+    private apiUrl = `${environment.apiUrl}/plafonds`;
 
     getPlafonds(): Observable<Plafond[]> {
         return this.http.get<any>(this.apiUrl).pipe(map(res => res.data));

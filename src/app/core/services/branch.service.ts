@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface Branch {
     id: number;
@@ -29,7 +30,7 @@ export interface ApiResponse<T> {
 })
 export class BranchService {
     private http = inject(HttpClient);
-    private apiUrl = '/api/branches';
+    private apiUrl = `${environment.apiUrl}/branches`;
 
     getBranches(): Observable<Branch[]> {
         return this.http.get<ApiResponse<Branch[]>>(this.apiUrl).pipe(
