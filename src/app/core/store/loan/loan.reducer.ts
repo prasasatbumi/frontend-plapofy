@@ -1,5 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { LoanActions } from './loan.actions';
+import { AuthActions } from '../auth/auth.actions';
 import { Loan } from '../../services/loan.service';
 
 export interface LoanState {
@@ -97,5 +98,8 @@ export const loanReducer = createReducer(
             ...state,
             actionLoading: false,
             error
-        }))
+        })),
+
+    // Clear state on Logout
+    on(AuthActions.logout, () => initialState)
 );
