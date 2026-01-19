@@ -33,6 +33,10 @@ export interface Loan {
     selfieImagePath?: string;
     npwpImagePath?: string;
     businessLicenseImagePath?: string;
+    // New fields from backend
+    disbursedAt?: string;
+    nextDueDate?: string;
+    remainingTenor?: number;
 }
 
 @Injectable({
@@ -64,6 +68,10 @@ export class LoanService {
 
     rejectLoan(id: number, remarks?: string): Observable<any> {
         return this.http.patch(`${this.apiUrl}/${id}/reject`, { remarks });
+    }
+
+    submitLoan(request: any): Observable<Loan> {
+        return this.http.post<any>(this.apiUrl, request).pipe(map(res => res.data));
     }
 
     simulateLoan(request: LoanSimulationRequest): Observable<LoanSimulationResponse> {

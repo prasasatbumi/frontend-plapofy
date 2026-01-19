@@ -1,10 +1,11 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Action } from 'rxjs/internal/scheduler/Action';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { LucideAngularModule, Eye, EyeOff, Lock, User, MonitorCheck } from 'lucide-angular';
-import { AuthService } from '../../../core/services/auth.service';
+import { Store } from '@ngrx/store';
+import { AuthActions } from '../../../core/store/auth/auth.actions';
+import { selectAuthError, selectAuthLoading } from '../../../core/store/auth/auth.selectors';
 
 @Component({
     selector: 'app-login',
@@ -136,8 +137,7 @@ import { AuthService } from '../../../core/services/auth.service';
 })
 export class LoginComponent {
     private fb = inject(FormBuilder);
-    private authService = inject(AuthService);
-    private router = inject(Router);
+    private store = inject(Store);
 
     // Icons
     readonly Eye = Eye;
@@ -151,8 +151,8 @@ export class LoginComponent {
         password: ['', [Validators.required]]
     });
 
-    isLoading = signal(false);
-    errorMessage = signal('');
+    isLoading = this.store.selectSignal(selectAuthLoading);
+    errorMessage = this.store.selectSignal(selectAuthError);
     showPassword = signal(false);
 
     togglePassword() {
@@ -170,24 +170,12 @@ export class LoginComponent {
             return;
         }
 
-        this.isLoading.set(true);
-        this.errorMessage.set('');
-
         const formValue = this.loginForm.getRawValue();
         const credentials = {
             username: formValue.username || '',
             password: formValue.password || ''
         };
 
-        this.authService.login(credentials).subscribe({
-            next: () => {
-                this.isLoading.set(false);
-                this.router.navigate(['/dashboard']);
-            },
-            error: (err) => {
-                this.isLoading.set(false);
-                this.errorMessage.set(err.error?.message || 'Invalid username or password');
-            }
-        });
+        this.store.dispatch(AuthActions.login({ request: credentials }));
     }
 }

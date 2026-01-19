@@ -1,8 +1,10 @@
 import { Component, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { LucideAngularModule, LayoutDashboard, Users, LogOut, Menu, X, User, PieChart, FileText, Shield, LayoutGrid, Lock, Calculator, Building2 } from 'lucide-angular';
-import { AuthService } from '../../services/auth.service';
+import { Store } from '@ngrx/store';
+import { AuthActions } from '../../../core/store/auth/auth.actions';
+import { selectCurrentUser } from '../../../core/store/auth/auth.selectors';
 import { NotificationCenterComponent } from '../notification-center/notification-center.component';
 
 @Component({
@@ -162,8 +164,7 @@ import { NotificationCenterComponent } from '../notification-center/notification
   `
 })
 export class LayoutComponent {
-  private authService = inject(AuthService);
-  private router = inject(Router);
+  private store = inject(Store);
 
   // Icons
   readonly LayoutDashboard = LayoutDashboard;
@@ -181,28 +182,29 @@ export class LayoutComponent {
   readonly Building2 = Building2;
 
   isSidebarOpen = signal(false);
+  currentUser = this.store.selectSignal(selectCurrentUser);
 
   // Use computed or simple signal access if AuthService exposes signals
   isAdmin = computed(() => {
-    const roles = this.authService.currentUser()?.roles || [];
+    const roles = this.currentUser()?.roles || [];
     return roles.includes('ROLE_SUPER_ADMIN');
   });
 
   isInternal = computed(() => {
-    const roles = this.authService.currentUser()?.roles || [];
+    const roles = this.currentUser()?.roles || [];
     const internalRoles = ['ROLE_SUPER_ADMIN', 'ROLE_MARKETING', 'ROLE_BRANCH_MANAGER', 'ROLE_BACK_OFFICE'];
     return roles.some(r => internalRoles.includes(r));
   });
 
   isNasabah = computed(() => {
-    const roles = this.authService.currentUser()?.roles || [];
+    const roles = this.currentUser()?.roles || [];
     return roles.includes('ROLE_NASABAH');
   });
 
-  username = computed(() => this.authService.currentUser()?.username || 'User');
+  username = computed(() => this.currentUser()?.username || 'User');
 
   userRole = computed(() => {
-    const roles = this.authService.currentUser()?.roles || [];
+    const roles = this.currentUser()?.roles || [];
     if (roles.includes('ROLE_SUPER_ADMIN')) return 'Super Admin';
     if (roles.includes('ROLE_BRANCH_MANAGER')) return 'Branch Manager';
     if (roles.includes('ROLE_MARKETING')) return 'Marketing';
@@ -215,7 +217,6 @@ export class LayoutComponent {
   }
 
   logout() {
-    this.authService.logout();
-    this.router.navigate(['/login']);
+    this.store.dispatch(AuthActions.logout());
   }
 }

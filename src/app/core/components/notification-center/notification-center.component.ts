@@ -1,14 +1,14 @@
 import { Component, inject, signal, OnInit, HostListener, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { LucideAngularModule, Bell, X, Check } from 'lucide-angular';
 import { NotificationService, Notification } from '../../services/notification.service';
 
 @Component({
-    selector: 'app-notification-center',
-    standalone: true,
-    imports: [CommonModule, RouterModule, LucideAngularModule],
-    template: `
+  selector: 'app-notification-center',
+  standalone: true,
+  imports: [CommonModule, RouterModule, LucideAngularModule],
+  template: `
       <div class="relative">
         <!-- Bell Button -->
         <button (click)="toggleDropdown()" 
@@ -34,7 +34,7 @@ import { NotificationService, Notification } from '../../services/notification.s
             <div class="max-h-80 overflow-y-auto">
               @for (notification of notificationService.notifications(); track notification.id) {
                 <div 
-                  (click)="markAsRead(notification)"
+                  (click)="handleNotificationClick(notification)"
                   class="p-4 border-b border-gray-50 hover:bg-gray-50 cursor-pointer transition-colors"
                   [class.bg-blue-50]="!notification.read">
                   <div class="flex items-start gap-3">
@@ -68,51 +68,68 @@ import { NotificationService, Notification } from '../../services/notification.s
     `
 })
 export class NotificationCenterComponent implements OnInit {
-    notificationService = inject(NotificationService);
-    private elementRef = inject(ElementRef);
+  notificationService = inject(NotificationService);
+  private elementRef = inject(ElementRef);
+  private router = inject(Router);
 
-    readonly Bell = Bell;
-    readonly X = X;
-    readonly Check = Check;
+  readonly Bell = Bell;
+  readonly X = X;
+  readonly Check = Check;
 
-    isOpen = signal(false);
+  isOpen = signal(false);
 
-    ngOnInit() {
-        this.notificationService.refreshAll();
+  ngOnInit() {
+    this.notificationService.refreshAll();
+    // Poll every 10 seconds
+    setInterval(() => {
+      this.notificationService.refreshAll();
+    }, 10000);
+  }
+
+  toggleDropdown() {
+    this.isOpen.update(v => !v);
+    if (this.isOpen()) {
+      this.notificationService.refreshAll();
     }
+  }
 
-    toggleDropdown() {
-        this.isOpen.update(v => !v);
-        if (this.isOpen()) {
-            this.notificationService.refreshAll();
-        }
+  handleNotificationClick(notification: Notification) {
+    this.markAsRead(notification);
+    this.isOpen.set(false); // Close dropdown
+
+    // Extract Loan ID from message (e.g., "Loan 123 approved", "New loan 123...")
+    const match = notification.message.match(/Loan (\d+)/i);
+    if (match) {
+      const loanId = match[1];
+      this.router.navigate(['/loans'], { queryParams: { search: loanId } });
     }
+  }
 
-    markAsRead(notification: Notification) {
-        if (!notification.read) {
-            this.notificationService.markAsRead(notification.id).subscribe();
-        }
+  markAsRead(notification: Notification) {
+    if (!notification.read) {
+      this.notificationService.markAsRead(notification.id).subscribe();
     }
+  }
 
-    formatDate(dateStr: string): string {
-        const date = new Date(dateStr);
-        const now = new Date();
-        const diff = now.getTime() - date.getTime();
-        const minutes = Math.floor(diff / 60000);
-        const hours = Math.floor(minutes / 60);
-        const days = Math.floor(hours / 24);
+  formatDate(dateStr: string): string {
+    const date = new Date(dateStr);
+    const now = new Date();
+    const diff = now.getTime() - date.getTime();
+    const minutes = Math.floor(diff / 60000);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
 
-        if (minutes < 1) return 'Just now';
-        if (minutes < 60) return `${minutes}m ago`;
-        if (hours < 24) return `${hours}h ago`;
-        if (days < 7) return `${days}d ago`;
-        return date.toLocaleDateString();
+    if (minutes < 1) return 'Just now';
+    if (minutes < 60) return `${minutes}m ago`;
+    if (hours < 24) return `${hours}h ago`;
+    if (days < 7) return `${days}d ago`;
+    return date.toLocaleDateString();
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: Event) {
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.isOpen.set(false);
     }
-
-    @HostListener('document:click', ['$event'])
-    onClickOutside(event: Event) {
-        if (!this.elementRef.nativeElement.contains(event.target)) {
-            this.isOpen.set(false);
-        }
-    }
+  }
 }

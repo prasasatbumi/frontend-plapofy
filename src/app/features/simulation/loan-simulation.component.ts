@@ -5,12 +5,20 @@ import { LayoutComponent } from '../../core/components/layout/layout.component';
 import { LucideAngularModule, Calculator, DollarSign, Calendar, Percent, CreditCard, CheckCircle } from 'lucide-angular';
 import { PlafondService, Plafond } from '../../core/services/plafond.service';
 import { LoanService, LoanSimulationResponse } from '../../core/services/loan.service';
+import { ProfileService } from '../../core/services/profile.service';
+import { Branch } from '../../core/services/branch.service';
+import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { MasterActions } from '../../core/store/master/master.actions';
+import { selectAllBranches, selectAllPlafonds } from '../../core/store/master/master.selectors';
+import { ProfileActions } from '../../core/store/profile/profile.actions';
+import { selectKycStatus } from '../../core/store/profile/profile.selectors';
 
 @Component({
-    selector: 'app-loan-simulation',
-    standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, LayoutComponent, LucideAngularModule],
-    template: `
+  selector: 'app-loan-simulation',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, LayoutComponent, LucideAngularModule],
+  template: `
     <app-layout>
       <div class="mb-8">
          <h1 class="text-2xl font-bold text-gray-900">Loan Simulation</h1>
@@ -144,7 +152,7 @@ import { LoanService, LoanSimulationResponse } from '../../core/services/loan.se
               </div>
 
               <!-- Apply Button -->
-               <button routerLink="/loans" class="w-full bg-white text-blue-900 py-3 rounded-lg font-bold hover:bg-blue-50 transition-colors mt-4">
+  <button (click)="initiateApplication()" class="w-full bg-white text-blue-900 py-3 rounded-lg font-bold hover:bg-blue-50 transition-colors mt-4">
                   Apply for this Loan
                </button>
             </div>
@@ -156,79 +164,173 @@ import { LoanService, LoanSimulationResponse } from '../../core/services/loan.se
            </div>
         }
       </div>
+
+      <!-- Application Modal -->
+      @if (showApplicationModal()) {
+        <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+            <div class="bg-white rounded-xl shadow-xl w-full max-w-lg overflow-hidden">
+                <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+                    <h2 class="text-lg font-bold text-gray-900">Finalize Application</h2>
+                    <button (click)="showApplicationModal.set(false)" class="text-gray-400 hover:text-gray-600"><lucide-icon [img]="CheckCircle" class="w-5 h-5 rotate-45"></lucide-icon></button>
+                </div>
+                
+                <form [formGroup]="appForm" (ngSubmit)="submitApplication()" class="p-6 space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Select Branch</label>
+                        <select formControlName="branchId" class="w-full px-4 py-2 border rounded-lg">
+                            <option [ngValue]="null">-- Select Branch --</option>
+                            @for (b of branches(); track b.id) {
+                                <option [value]="b.id">{{ b.name }}</option>
+                            }
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Purpose of Loan</label>
+                        <textarea formControlName="purpose" rows="3" class="w-full px-4 py-2 border rounded-lg"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Business Type</label>
+                        <input type="text" formControlName="businessType" class="w-full px-4 py-2 border rounded-lg">
+                    </div>
+
+                    <div class="pt-4 flex justify-end gap-2">
+                        <button type="button" (click)="showApplicationModal.set(false)" class="px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg">Cancel</button>
+                        <button type="submit" [disabled]="appForm.invalid || isSubmitting()" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50">
+                            {{ isSubmitting() ? 'Submitting...' : 'Submit Application' }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+      }
     </app-layout>
   `
 })
 export class LoanSimulationComponent implements OnInit {
-    private plafondService = inject(PlafondService);
-    private loanService = inject(LoanService);
-    private fb = inject(FormBuilder);
+  private loanService = inject(LoanService);
+  // private profileService = inject(ProfileService); // Removed
+  private router = inject(Router);
+  private fb = inject(FormBuilder);
+  private store = inject(Store);
 
-    // Icons
-    readonly Calculator = Calculator;
-    readonly DollarSign = DollarSign;
-    readonly Calendar = Calendar;
-    readonly Percent = Percent;
-    readonly CreditCard = CreditCard;
-    readonly CheckCircle = CheckCircle;
+  // Icons
+  readonly Calculator = Calculator;
+  readonly DollarSign = DollarSign;
+  readonly Calendar = Calendar;
+  readonly Percent = Percent;
+  readonly CreditCard = CreditCard;
+  readonly CheckCircle = CheckCircle;
 
-    plafonds = signal<Plafond[]>([]);
-    selectedPlafond = signal<Plafond | null>(null);
-    result = signal<LoanSimulationResponse | null>(null);
-    isLoading = signal(false);
+  plafonds = this.store.selectSignal(selectAllPlafonds);
+  selectedPlafond = signal<Plafond | null>(null);
+  result = signal<LoanSimulationResponse | null>(null);
+  isLoading = signal(false);
 
-    simForm = this.fb.group({
-        amount: [0, [Validators.required, Validators.min(1)]],
-        tenor: [0, [Validators.required, Validators.min(1)]]
+  simForm = this.fb.group({
+    amount: [0, [Validators.required, Validators.min(1)]],
+    tenor: [0, [Validators.required, Validators.min(1)]]
+  });
+
+  // Application Logic
+  showApplicationModal = signal(false);
+  branches = this.store.selectSignal(selectAllBranches);
+  kycStatus = this.store.selectSignal(selectKycStatus);
+  isSubmitting = signal(false);
+
+  appForm = this.fb.group({
+    branchId: [null, Validators.required],
+    purpose: ['', Validators.required],
+    businessType: ['', Validators.required]
+  });
+
+  ngOnInit() {
+    this.store.dispatch(MasterActions.loadPlafonds());
+    this.store.dispatch(MasterActions.loadBranches());
+    this.store.dispatch(ProfileActions.loadProfile()); // Ensure profile/KYC is loaded
+  }
+
+  // Legacy load methods removed.
+
+  selectPlafond(p: Plafond) {
+    this.selectedPlafond.set(p);
+    this.result.set(null);
+
+    // Update validators based on plafond limits
+    this.simForm.get('amount')?.setValidators([
+      Validators.required,
+      Validators.min(p.minAmount),
+      Validators.max(p.maxAmount)
+    ]);
+    this.simForm.get('amount')?.updateValueAndValidity();
+
+    // Reset tenor to first available if not valid
+    const currentTenor = this.simForm.get('tenor')?.value;
+    const validTenors = p.interests.map(i => i.tenor);
+    if (!validTenors.includes(currentTenor || 0)) {
+      this.simForm.patchValue({ tenor: validTenors[0] });
+    }
+  }
+
+  calculate() {
+    if (this.simForm.invalid || !this.selectedPlafond()) return;
+
+    this.isLoading.set(true);
+    const req = {
+      plafondId: this.selectedPlafond()!.id,
+      amount: this.simForm.value.amount!,
+      tenorMonth: this.simForm.value.tenor!
+    };
+
+    this.loanService.simulateLoan(req).subscribe({
+      next: (res) => {
+        this.result.set(res);
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        alert('Simulation failed: ' + (err.error?.message || 'Unknown error'));
+        this.isLoading.set(false);
+      }
     });
+  }
 
-    ngOnInit() {
-        this.loadPlafonds();
+  initiateApplication() {
+    const status = this.kycStatus();
+
+    if (status === 'VERIFIED') {
+      this.showApplicationModal.set(true);
+    } else if (status === 'PENDING') {
+      alert('Cannot apply: Your KYC is currently under review.');
+    } else {
+      if (confirm('You must complete KYC verification before applying. Go to Profile?')) {
+        this.router.navigate(['/profile']);
+      }
     }
+  }
 
-    loadPlafonds() {
-        this.plafondService.getPlafonds().subscribe(data => this.plafonds.set(data));
-    }
+  submitApplication() {
+    if (this.appForm.invalid) return;
+    this.isSubmitting.set(true);
 
-    selectPlafond(p: Plafond) {
-        this.selectedPlafond.set(p);
-        this.result.set(null);
+    const req = {
+      plafondId: this.selectedPlafond()!.id,
+      amount: this.simForm.value.amount,
+      tenor: this.simForm.value.tenor,
+      branchId: this.appForm.value.branchId,
+      purpose: this.appForm.value.purpose,
+      businessType: this.appForm.value.businessType
+    };
 
-        // Update validators based on plafond limits
-        this.simForm.get('amount')?.setValidators([
-            Validators.required,
-            Validators.min(p.minAmount),
-            Validators.max(p.maxAmount)
-        ]);
-        this.simForm.get('amount')?.updateValueAndValidity();
-
-        // Reset tenor to first available if not valid
-        const currentTenor = this.simForm.get('tenor')?.value;
-        const validTenors = p.interests.map(i => i.tenor);
-        if (!validTenors.includes(currentTenor || 0)) {
-            this.simForm.patchValue({ tenor: validTenors[0] });
-        }
-    }
-
-    calculate() {
-        if (this.simForm.invalid || !this.selectedPlafond()) return;
-
-        this.isLoading.set(true);
-        const req = {
-            plafondId: this.selectedPlafond()!.id,
-            amount: this.simForm.value.amount!,
-            tenorMonth: this.simForm.value.tenor!
-        };
-
-        this.loanService.simulateLoan(req).subscribe({
-            next: (res) => {
-                this.result.set(res);
-                this.isLoading.set(false);
-            },
-            error: (err) => {
-                alert('Simulation failed: ' + (err.error?.message || 'Unknown error'));
-                this.isLoading.set(false);
-            }
-        });
-    }
+    this.loanService.submitLoan(req).subscribe({
+      next: (res) => {
+        alert('Loan Application Submitted successfully! ID: ' + res.id);
+        this.isSubmitting.set(false);
+        this.showApplicationModal.set(false);
+        this.router.navigate(['/loans']);
+      },
+      error: (err) => {
+        alert('Submission failed: ' + (err.error?.message || 'Unknown error'));
+        this.isSubmitting.set(false);
+      }
+    });
+  }
 }

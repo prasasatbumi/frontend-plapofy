@@ -8,6 +8,11 @@ export const routes: Routes = [
         path: '',
         loadComponent: () => import('./features/landing/landing.component').then(m => m.LandingComponent)
     },
+    {
+        path: 'profile',
+        loadComponent: () => import('./features/profile/profile.component').then(m => m.ProfileComponent),
+        canActivate: [authGuard]
+    },
     { path: 'login', loadComponent: () => import('./features/auth/login/login.component').then(m => m.LoginComponent) },
     {
         path: 'forgot-password',
@@ -52,5 +57,8 @@ export const routes: Routes = [
         data: { roles: ['ROLE_SUPER_ADMIN'] }
     },
 
-    { path: '**', redirectTo: 'login' }
+    {
+        path: '**',
+        loadComponent: () => import('./core/components/not-found/not-found.component').then(m => m.NotFoundComponent)
+    }
 ];

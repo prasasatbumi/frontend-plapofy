@@ -1,11 +1,18 @@
 import { Component, inject, signal, computed, OnInit } from '@angular/core';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
-import { LoanService, Loan } from '../../core/services/loan.service';
-import { BranchService, Branch } from '../../core/services/branch.service';
+import { Loan } from '../../core/services/loan.service';
+import { Branch } from '../../core/services/branch.service';
 import { AuthService } from '../../core/services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { LayoutComponent } from '../../core/components/layout/layout.component';
 import { LucideAngularModule, Search, FileText, CheckCircle, XCircle, Eye, X } from 'lucide-angular';
+import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { MasterActions } from '../../core/store/master/master.actions';
+import { selectAllBranches } from '../../core/store/master/master.selectors';
+import { LoanActions } from '../../core/store/loan/loan.actions';
+import { selectFilteredLoans, selectSelectedLoan, selectLoanFilters } from '../../core/store/loan/loan.selectors';
+import { map } from 'rxjs'; // For selector transforms if needed
 
 @Component({
     selector: 'app-loan-application',
@@ -41,7 +48,7 @@ import { LucideAngularModule, Search, FileText, CheckCircle, XCircle, Eye, X } f
                 <input 
                     type="text" 
                     [value]="searchQuery()"
-                    (input)="searchQuery.set($any($event.target).value)"
+                    (input)="updateSearch($any($event.target).value)"
                     placeholder="Search applicant..." 
                     class="pl-10 pr-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none w-64"
                 >
@@ -53,7 +60,7 @@ import { LucideAngularModule, Search, FileText, CheckCircle, XCircle, Eye, X } f
       <div class="flex space-x-1 mb-6 border-b border-gray-200">
         @for (tab of tabs; track tab.id) {
             <button 
-                (click)="activeTab.set(tab.id)"
+                (click)="setActiveTab(tab.id)"
                 class="px-4 py-2 text-sm font-medium border-b-2 transition-colors duration-200"
                 [ngClass]="activeTab() === tab.id ? 'border-blue-600 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'">
                 {{ tab.label }}
@@ -243,9 +250,9 @@ import { LucideAngularModule, Search, FileText, CheckCircle, XCircle, Eye, X } f
   `
 })
 export class LoanApplicationComponent implements OnInit {
-    private loanService = inject(LoanService);
-    private branchService = inject(BranchService);
     private authService = inject(AuthService);
+    private route = inject(ActivatedRoute);
+    private store = inject(Store);
 
     // Icons
     readonly Search = Search;
@@ -255,12 +262,19 @@ export class LoanApplicationComponent implements OnInit {
     readonly Eye = Eye;
     readonly X = X;
 
-    loans = signal<Loan[]>([]);
-    branches = signal<Branch[]>([]);
-    selectedLoan = signal<Loan | null>(null);
-    currentUser = this.authService.currentUser;
+    // State Selectors
+    branches = this.store.selectSignal(selectAllBranches);
+    selectedLoan = this.store.selectSignal(selectSelectedLoan);
+    filteredLoans = this.store.selectSignal(selectFilteredLoans);
+    filters = this.store.selectSignal(selectLoanFilters); // To access current filter values
 
-    selectedBranch = signal<number | null>(null);
+    currentUser = this.authService.currentUser;
+    viewingImageUrl = signal<string | null>(null);
+
+    // Derived State for UI
+    selectedBranch = computed(() => this.filters().branchId);
+    searchQuery = computed(() => this.filters().searchQuery);
+    activeTab = computed(() => this.filters().statusTab);
     showBranchFilter = computed(() => {
         const user = this.currentUser();
         // Only Super Admin and Back Office typically filter all branches
@@ -268,9 +282,7 @@ export class LoanApplicationComponent implements OnInit {
         return user?.roles.includes('ROLE_SUPER_ADMIN') || user?.roles.includes('ROLE_BACK_OFFICE');
     });
 
-    searchQuery = signal('');
-    activeTab = signal('ALL');
-    viewingImageUrl = signal<string | null>(null);
+    // tabs definition remains same
 
     tabs = [
         { id: 'ALL', label: 'All Applications' },
@@ -281,65 +293,42 @@ export class LoanApplicationComponent implements OnInit {
         { id: 'REJECTED', label: 'Rejected' }
     ];
 
-    filteredLoans = computed(() => {
-        const query = this.searchQuery().toLowerCase().trim();
-        const tab = this.activeTab();
-        let loans = this.loans();
-
-        // 1. Filter by Tab
-        if (tab !== 'ALL') {
-            loans = loans.filter(l => l.currentStatus === tab);
-        }
-
-        // 2. Filter by Search Query
-        if (query) {
-            loans = loans.filter(l =>
-                l.applicant.username.toLowerCase().includes(query) ||
-                l.applicant.email.toLowerCase().includes(query) ||
-                l.branch?.name.toLowerCase().includes(query)
-            );
-        }
-
-        return loans;
-    });
+    // filteredLoans computed removed (moved to selector)
 
     ngOnInit() {
-        this.loadBranches();
-        this.loadLoans();
-    }
+        this.store.dispatch(MasterActions.loadBranches()); // Ensure branches are loaded
+        this.store.dispatch(LoanActions.loadLoans({}));
 
-    loadBranches() {
-        if (this.showBranchFilter()) {
-            this.branchService.getBranches().subscribe({
-                next: (data) => this.branches.set(data),
-                error: (err) => console.error('Failed to load branches', err)
-            });
-        }
-    }
-
-    loadLoans() {
-        this.loanService.getLoans(this.selectedBranch() || undefined).subscribe({
-            next: (data) => this.loans.set(data),
-            error: (err) => console.error('Failed to load loans', err)
+        // Auto-fill search from URL query param
+        this.route.queryParams.subscribe((params: any) => {
+            if (params['search']) {
+                this.updateSearch(params['search']);
+            }
         });
     }
 
+    // Load methods removed
+
     onBranchChange(branchId: any) {
-        // Handle "All Branches" (null/undefined)
-        // Note: ngValue null might come as string "null" depending on binding, but [ngValue] usually handles it correctly? 
-        // Let's ensure type safety
         const id = branchId === 'null' ? null : branchId;
-        this.selectedBranch.set(id);
-        this.loadLoans();
+        this.store.dispatch(LoanActions.setBranchFilter({ branchId: id }));
+    }
+
+    updateSearch(query: string) {
+        this.store.dispatch(LoanActions.setSearchQuery({ query }));
+    }
+
+    setActiveTab(tabId: string) {
+        this.store.dispatch(LoanActions.setStatusTab({ tab: tabId }));
     }
 
     // --- Modal ---
     viewDetails(loan: Loan) {
-        this.selectedLoan.set(loan);
+        this.store.dispatch(LoanActions.selectLoan({ loan }));
     }
 
     closeModal() {
-        this.selectedLoan.set(null);
+        this.store.dispatch(LoanActions.clearSelection());
     }
 
     openImage(url: string) {
@@ -378,28 +367,27 @@ export class LoanApplicationComponent implements OnInit {
 
     // --- Actions ---
 
+    // --- Actions ---
+
     review(id: number) {
         if (!confirm('Review this loan?')) return;
-        this.loanService.reviewLoan(id).subscribe(() => this.loadLoans());
+        this.store.dispatch(LoanActions.reviewLoan({ id }));
     }
 
     approve(id: number) {
         if (!confirm('Approve this loan?')) return;
-        this.loanService.approveLoan(id).subscribe(() => this.loadLoans());
+        this.store.dispatch(LoanActions.approveLoan({ id }));
     }
 
     disburse(id: number) {
         if (!confirm('Disburse this loan?')) return;
-        this.loanService.disburseLoan(id).subscribe(() => this.loadLoans());
+        this.store.dispatch(LoanActions.disburseLoan({ id }));
     }
 
     reject(id: number) {
         const remarks = prompt('Enter rejection reason (optional):');
         if (!confirm('Reject this loan?')) return;
-        this.loanService.rejectLoan(id, remarks || undefined).subscribe({
-            next: () => this.loadLoans(),
-            error: (err) => alert('Failed to reject: ' + (err.error?.message || 'Unknown error'))
-        });
+        this.store.dispatch(LoanActions.rejectLoan({ id, remarks: remarks || undefined }));
     }
 
     getStatusColor(status: string): string {
