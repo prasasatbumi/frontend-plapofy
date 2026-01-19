@@ -82,6 +82,47 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
         </div>
       </section>
 
+      <!-- Brand Story & Mascot Section (New) -->
+      <section class="py-16 bg-blue-50/50 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <div class="w-full md:w-1/3 flex justify-center">
+                    <div class="relative group cursor-pointer">
+                        <div class="absolute inset-0 bg-teal-200 rounded-full blur-2xl opacity-40 group-hover:opacity-60 transition-opacity"></div>
+                        <img src="/assets/mascot.png" alt="Plapofy Mascot" class="relative z-10 w-48 h-48 md:w-64 md:h-64 object-contain transition-transform transform group-hover:rotate-6 hover:scale-110 duration-300">
+                        <div class="absolute -bottom-4 right-0 bg-white px-4 py-1.5 rounded-full shadow-md text-xs font-bold text-teal-600 rotate-3 group-hover:rotate-0 transition-transform">
+                            Hi, I'm Platy! 👋
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full md:w-2/3">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-100 text-teal-700 text-xs font-bold uppercase tracking-wide mb-4">
+                        Kenalan Yuk!
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Apa itu <span class="text-blue-600">Plapofy</span>?</h2>
+                    <p class="text-gray-600 text-lg leading-relaxed mb-6">
+                        Nama <strong>Plapofy</strong> diambil dari gabungan kata <strong>"Plafond"</strong> dan <strong>"Friendly"</strong>. 
+                        Kami hadir untuk memberikan limit pinjaman (plafond) yang bersahabat, transparan, dan tidak mencekik leher.
+                    </p>
+                    <div class="grid sm:grid-cols-2 gap-6">
+                        <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                            <h4 class="font-bold text-gray-900 mb-2 flex items-center gap-2">
+                                <lucide-icon [img]="CheckCircle2" class="w-5 h-5 text-blue-500"></lucide-icon> Filosofi Kami
+                            </h4>
+                            <p class="text-sm text-gray-500">Teman finansial yang "Friendly". Bunga wajar, tanpa biaya siluman, dan penagihan yang manusiawi.</p>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                            <h4 class="font-bold text-gray-900 mb-2 flex items-center gap-2">
+                                <lucide-icon [img]="Zap" class="w-5 h-5 text-teal-500"></lucide-icon> Maskot Kami
+                            </h4>
+                            <p class="text-sm text-gray-500">Si <strong>Platy</strong> (Platypus). Unik dan adaptif! Bisa berenang di arus digital dan berjalan di darat, siap menemanimu di segala situasi.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </section>
+
       <!-- Calculator & Product Options Section -->
       <section class="py-20 bg-white" id="calculator">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -335,8 +376,8 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
       <section class="py-20 bg-gray-50 border-t border-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-16">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Cara Mengajukan Pinjaman</h2>
-                <p class="text-gray-500">4 Langkah mudah menuju dana segar. Proses digital, tanpa tatap muka.</p>
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Langkah Mudah Pengajuan Pinjaman</h2>
+                <p class="text-gray-500">Ikuti 4 langkah praktis ini untuk mendapatkan dana tunai hari ini juga.</p>
             </div>
             
             <div class="grid md:grid-cols-4 gap-8 text-center relative">
