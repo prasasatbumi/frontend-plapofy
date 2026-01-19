@@ -217,8 +217,8 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
               <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 mb-6 group-hover:scale-110 transition-transform">
                 <lucide-icon [img]="Zap" class="w-6 h-6"></lucide-icon>
               </div>
-              <h3 class="text-xl font-bold text-gray-900 mb-2">Instant Disbursal</h3>
-              <p class="text-gray-500 text-sm mb-4">Funds transferred to your account in as little as 5 minutes after approval.</p>
+              <h3 class="text-xl font-bold text-gray-900 mb-2">Cair Instan dalam 5 Menit</h3>
+              <p class="text-gray-500 text-sm mb-4">Dana langsung ditransfer ke rekening Anda sesaat setelah persetujuan. Tanpa menunggu lama.</p>
               <ul class="space-y-2">
                 <li class="flex items-center gap-2 text-sm text-gray-600">
                     <lucide-icon [img]="ChevronRight" class="w-4 h-4 text-blue-500"></lucide-icon> 24/7 Automated Process
@@ -235,8 +235,8 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
               <div class="w-12 h-12 bg-teal-100 rounded-xl flex items-center justify-center text-teal-600 mb-6 group-hover:scale-110 transition-transform">
                 <lucide-icon [img]="Star" class="w-6 h-6"></lucide-icon>
               </div>
-              <h3 class="text-xl font-bold text-gray-900 mb-2">Competitive Rates</h3>
-              <p class="text-gray-500 text-sm mb-4">Enjoy some of the lowest interest rates in the market, tailored to your profile.</p>
+              <h3 class="text-xl font-bold text-gray-900 mb-2">Bunga Kompetitif</h3>
+              <p class="text-gray-500 text-sm mb-4">Nikmati bunga mulai dari 0.8% flat per bulan. Lebih rendah dari kebanyakan kartu kredit.</p>
               <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 shadow-sm">
                   <div class="flex justify-between items-center mb-2">
                     <span class="text-sm text-gray-500">Monthly Rate</span>
@@ -265,7 +265,65 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
                 </li>
               </ul>
             </div>
-          </div>
+        </div>
+      </section>
+
+      <!-- Requirements Section (New) -->
+      <section class="py-20 bg-white border-t border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="order-2 md:order-1 relative">
+                    <div class="absolute inset-0 bg-blue-100 rounded-full blur-3xl opacity-50 translate-x-12 translate-y-12"></div>
+                    <img src="/assets/mascot.png" alt="Requirements" class="relative z-10 w-full max-w-sm mx-auto drop-shadow-xl hover:rotate-3 transition-transform duration-500">
+                </div>
+                <div class="order-1 md:order-2">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-6">Siapa yang Bisa Mengajukan?</h2>
+                    <p class="text-gray-500 mb-8">Pastikan Anda memenuhi syarat berikut agar pengajuan Anda langsung disetujui.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 shrink-0">
+                                <lucide-icon [img]="CheckCircle2" class="w-5 h-5"></lucide-icon>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900">Warga Negara Indonesia (WNI)</h4>
+                                <p class="text-sm text-gray-500">Memiliki KTP elektronik (e-KTP) yang aktif.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 shrink-0">
+                                <lucide-icon [img]="CheckCircle2" class="w-5 h-5"></lucide-icon>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900">Usia Produktif</h4>
+                                <p class="text-sm text-gray-500">Berusia antara 21 - 50 tahun saat pengajuan.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 shrink-0">
+                                <lucide-icon [img]="CheckCircle2" class="w-5 h-5"></lucide-icon>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900">Penghasilan Tetap</h4>
+                                <p class="text-sm text-gray-500">Memiliki pekerjaan atau usaha dengan penghasilan rutin.</p>
+                            </div>
+                        </div>
+
+                         <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 shrink-0">
+                                <lucide-icon [img]="CheckCircle2" class="w-5 h-5"></lucide-icon>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900">Rekening Bank Pribadi</h4>
+                                <p class="text-sm text-gray-500">Rekening atas nama sendiri sesuai KTP untuk pencairan dana.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
       </section>
 
@@ -414,8 +472,28 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
               <span class="text-lg font-bold text-gray-400">Plapofy</span>
             </div>
             <div class="text-sm text-gray-400">
-                &copy; 2026 Plapofy Inc. All rights reserved.
+                &copy; 2026 PT FinProv Solusi Digital. All rights reserved. <br>
+                <span class="text-xs mt-1 block">Terdaftar dan diawasi oleh Otoritas Jasa Keuangan (OJK).</span>
             </div>
+        </div>
+        <!-- OJK Disclaimer Banner -->
+        <div class="bg-gray-50 py-4 mt-8 border-t border-gray-100">
+             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-center gap-4 text-center sm:text-left">
+                <div class="flex items-center gap-3 opacity-80 grayscale hover:grayscale-0 transition-all">
+                    <!-- Placeholder OJK Logo (Using Shield Icon as visual representation if image missing) -->
+                     <div class="border-2 border-gray-400 rounded-full p-1">
+                        <lucide-icon [img]="ShieldCheck" class="w-8 h-8 text-gray-600"></lucide-icon>
+                     </div>
+                     <div>
+                        <p class="text-xs font-bold text-gray-700">Terdaftar & Diawasi oleh</p>
+                        <p class="text-lg font-extrabold text-gray-900 tracking-wider">OJK</p>
+                     </div>
+                </div>
+                <div class="hidden sm:block w-px h-8 bg-gray-300"></div>
+                <p class="text-xs text-gray-500 max-w-lg">
+                    PT FinProv Solusi Digital adalah perusahaan finansial teknologi yang terdaftar dan diawasi oleh Otoritas Jasa Keuangan (OJK) berdasarkan Surat Tanda Berizin/Terdaftar No. S-123/NB.213/2024.
+                </p>
+             </div>
         </div>
       </footer>
     </div>
