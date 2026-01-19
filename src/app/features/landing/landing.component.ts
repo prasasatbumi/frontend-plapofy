@@ -20,8 +20,11 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
               <span class="text-xl font-bold bg-gradient-to-r from-blue-600 to-teal-500 bg-clip-text text-transparent">Plapofy</span>
             </div>
             <div class="flex items-center gap-4">
-              <button class="bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-700 transition-colors hidden sm:block">
-                Get App
+              <button routerLink="/login" class="text-gray-600 hover:text-blue-600 font-medium text-sm transition-colors">
+                Masuk
+              </button>
+              <button routerLink="/register" class="bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-700 transition-colors hidden sm:block">
+                Daftar Sekarang
               </button>
             </div>
           </div>
@@ -37,20 +40,20 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
             <div class="text-center lg:text-left">
               <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-semibold uppercase tracking-wide mb-6">
                 <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
-                Now Available on iOS & Android
+                Tersedia di iOS & Android
               </div>
               <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 tracking-tight mb-6 leading-tight">
-                Instant Loans, <br>
-                <span class="bg-gradient-to-r from-blue-600 to-teal-500 bg-clip-text text-transparent">Infinite Possibilities.</span>
+                Pinjaman Instan, <br>
+                <span class="bg-gradient-to-r from-blue-600 to-teal-500 bg-clip-text text-transparent">Peluang Tak Terbatas.</span>
               </h1>
               <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto lg:mx-0">
-                Get funded in minutes with Plapofy. Fair rates, transparent terms, and a friendly AI assistant to guide you every step of the way. All from your phone.
+                Dapatkan dana dalam hitungan menit bersama Plapofy. Bunga wajar, syarat transparan, dan asisten AI ramah yang siap membantu. Semua dari genggaman Anda.
               </p>
               
               <div class="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
                 <button class="w-full sm:w-auto bg-gray-900 text-white px-8 py-3.5 rounded-xl font-semibold hover:bg-gray-800 transition-all flex items-center justify-center gap-2 shadow-lg shadow-gray-200/50">
                    <lucide-icon [img]="Smartphone" class="w-5 h-5"></lucide-icon>
-                   Download App
+                   Unduh Aplikasi
                 </button>
                 <div class="flex items-center gap-2 text-sm text-gray-500">
                     <div class="flex -space-x-2">
@@ -58,7 +61,7 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
                         <div class="w-8 h-8 rounded-full bg-gray-300 border-2 border-white"></div>
                         <div class="w-8 h-8 rounded-full bg-gray-400 border-2 border-white"></div>
                     </div>
-                    <span>Trusted by 10k+ users</span>
+                    <span>Dipercaya 10rb+ pengguna</span>
                 </div>
               </div>
             </div>
@@ -207,8 +210,8 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
       <section class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="text-center max-w-3xl mx-auto mb-16">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">Why Choose Plapofy?</h2>
-            <p class="text-gray-500">We make borrowing simple, transparent, and fair. No hidden fees, just help when you need it.</p>
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Mengapa Memilih Plapofy?</h2>
+            <p class="text-gray-500">Kami membuat pinjaman menjadi mudah, transparan, dan adil. Tanpa biaya tersembunyi, hanya solusi saat Anda butuh.</p>
           </div>
 
           <div class="grid md:grid-cols-3 gap-8">
@@ -221,10 +224,10 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
               <p class="text-gray-500 text-sm mb-4">Dana langsung ditransfer ke rekening Anda sesaat setelah persetujuan. Tanpa menunggu lama.</p>
               <ul class="space-y-2">
                 <li class="flex items-center gap-2 text-sm text-gray-600">
-                    <lucide-icon [img]="ChevronRight" class="w-4 h-4 text-blue-500"></lucide-icon> 24/7 Automated Process
+                    <lucide-icon [img]="ChevronRight" class="w-4 h-4 text-blue-500"></lucide-icon> Proses Otomatis 24/7
                 </li>
                 <li class="flex items-center gap-2 text-sm text-gray-600">
-                    <lucide-icon [img]="ChevronRight" class="w-4 h-4 text-blue-500"></lucide-icon> No Paperwork Needed
+                    <lucide-icon [img]="ChevronRight" class="w-4 h-4 text-blue-500"></lucide-icon> Tanpa Dokumen Fisik
                 </li>
               </ul>
             </div>
@@ -254,14 +257,14 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
               <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center text-purple-600 mb-6 group-hover:scale-110 transition-transform">
                 <lucide-icon [img]="Clock" class="w-6 h-6"></lucide-icon>
               </div>
-              <h3 class="text-xl font-bold text-gray-900 mb-2">Flexible Terms</h3>
-              <p class="text-gray-500 text-sm mb-4">Choose a repayment plan that fits your budget. Early repayment? No penalty.</p>
+              <h3 class="text-xl font-bold text-gray-900 mb-2">Tenor Fleksibel</h3>
+              <p class="text-gray-500 text-sm mb-4">Pilih rencana pembayaran yang sesuai anggaran Anda. Pelunasan lebih awal? Tanpa denda.</p>
                <ul class="space-y-2">
                 <li class="flex items-center gap-2 text-sm text-gray-600">
-                    <lucide-icon [img]="ChevronRight" class="w-4 h-4 text-purple-500"></lucide-icon> Repay Anytime
+                    <lucide-icon [img]="ChevronRight" class="w-4 h-4 text-purple-500"></lucide-icon> Bayar Kapan Saja
                 </li>
                 <li class="flex items-center gap-2 text-sm text-gray-600">
-                    <lucide-icon [img]="ChevronRight" class="w-4 h-4 text-purple-500"></lucide-icon> Limit up to Rp 500 Juta
+                    <lucide-icon [img]="ChevronRight" class="w-4 h-4 text-purple-500"></lucide-icon> Limit hingga Rp 500 Juta
                 </li>
               </ul>
             </div>
@@ -327,37 +330,44 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
         </div>
       </section>
 
-      <!-- How It Works Section -->
+      <!-- How It Works Section (Updated) -->
       <section class="py-20 bg-gray-50 border-t border-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-16">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Three Steps to Funding</h2>
-                <p class="text-gray-500">Getting a loan shouldn't be a marathon. We've simplified it to a sprint.</p>
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Cara Mengajukan Pinjaman</h2>
+                <p class="text-gray-500">4 Langkah mudah menuju dana segar. Proses digital, tanpa tatap muka.</p>
             </div>
             
-            <div class="grid md:grid-cols-3 gap-8 text-center relative">
+            <div class="grid md:grid-cols-4 gap-8 text-center relative">
                 <!-- Connector Line (Desktop) -->
-                <div class="hidden md:block absolute top-12 left-1/6 right-1/6 h-0.5 bg-gray-200 -z-10"></div>
+                <div class="hidden md:block absolute top-12 left-12 right-12 h-0.5 bg-gray-200 -z-10"></div>
 
                 <!-- Step 1 -->
-                <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm relative z-10">
-                    <div class="w-16 h-16 bg-blue-600 text-white rounded-2xl flex items-center justify-center text-xl font-bold mx-auto mb-6 shadow-lg shadow-blue-200">1</div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-2">Download App</h3>
-                    <p class="text-gray-500 text-sm">Get Plapofy on iOS or Android and sign up in seconds.</p>
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm relative z-10 transition-transform hover:-translate-y-2 duration-300">
+                    <div class="w-16 h-16 bg-white border-4 border-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-6 shadow-sm">1</div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Download & Daftar</h3>
+                    <p class="text-gray-500 text-sm">Unduh aplikasi Plapofy dan buat akun menggunakan nomor HP aktif Anda.</p>
                 </div>
 
                 <!-- Step 2 -->
-                <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm relative z-10">
-                    <div class="w-16 h-16 bg-teal-500 text-white rounded-2xl flex items-center justify-center text-xl font-bold mx-auto mb-6 shadow-lg shadow-teal-200">2</div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-2">E-KYC Verification</h3>
-                    <p class="text-gray-500 text-sm">Snap a photo of your KTP. Our AI verifies you instantly.</p>
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm relative z-10 transition-transform hover:-translate-y-2 duration-300">
+                     <div class="w-16 h-16 bg-white border-4 border-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-6 shadow-sm">2</div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Lengkapi Data</h3>
+                    <p class="text-gray-500 text-sm">Isi data diri, foto KTP, dan selfie. AI kami akan memverifikasi dalam hitungan detik.</p>
                 </div>
 
                 <!-- Step 3 -->
-                <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm relative z-10">
-                    <div class="w-16 h-16 bg-purple-600 text-white rounded-2xl flex items-center justify-center text-xl font-bold mx-auto mb-6 shadow-lg shadow-purple-200">3</div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-2">Get Funded</h3>
-                    <p class="text-gray-500 text-sm">Once approved, money is sent directly to your bank account.</p>
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm relative z-10 transition-transform hover:-translate-y-2 duration-300">
+                     <div class="w-16 h-16 bg-white border-4 border-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-6 shadow-sm">3</div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Pilih Pinjaman</h3>
+                    <p class="text-gray-500 text-sm">Tentukan jumlah dan tenor sesuai kebutuhan. Lihat simulasi cicilan secara transparan.</p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm relative z-10 transition-transform hover:-translate-y-2 duration-300">
+                     <div class="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-6 shadow-lg shadow-green-200">4</div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Dana Cair!</h3>
+                    <p class="text-gray-500 text-sm">Setelah disetujui, dana langsung masuk ke rekening bank Anda. Selesai!</p>
                 </div>
             </div>
         </div>
@@ -367,8 +377,8 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
       <section class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
              <div class="text-center max-w-3xl mx-auto mb-16">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Loved by Thousands</h2>
-                <p class="text-gray-500">Don't just take our word for it. Here's what our users say.</p>
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Disukai Ribuan Pengguna</h2>
+                <p class="text-gray-500">Jangan hanya percaya kata kami. Dengarkan apa kata mereka.</p>
             </div>
             
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -381,7 +391,7 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
                         <lucide-icon [img]="Star" class="w-4 h-4 fill-current"></lucide-icon>
                         <lucide-icon [img]="Star" class="w-4 h-4 fill-current"></lucide-icon>
                     </div>
-                    <p class="text-gray-600 text-sm mb-6">"Saved me during an emergency. The funds were in my account before I even left the hospital. Truly instant!"</p>
+                    <p class="text-gray-600 text-sm mb-6">"Sangat membantu saat kondisi darurat. Dana masuk ke rekening bahkan sebelum saya keluar dari rumah sakit. Benar-benar instan!"</p>
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold">A</div>
                         <div>
@@ -400,7 +410,7 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
                         <lucide-icon [img]="Star" class="w-4 h-4 fill-current"></lucide-icon>
                         <lucide-icon [img]="Star" class="w-4 h-4 fill-current"></lucide-icon>
                     </div>
-                    <p class="text-gray-600 text-sm mb-6">"The interest rates are actually fair, unlike other apps. Plus the platypus mascot is cute!"</p>
+                    <p class="text-gray-600 text-sm mb-6">"Bunganya cukup adil dibanding aplikasi lain. Plus, maskot platypus-nya lucu banget!"</p>
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center font-bold">S</div>
                         <div>
@@ -419,7 +429,7 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
                         <lucide-icon [img]="Star" class="w-4 h-4 fill-current"></lucide-icon>
                         <lucide-icon [img]="Star" class="w-4 h-4 fill-current"></lucide-icon>
                     </div>
-                    <p class="text-gray-600 text-sm mb-6">"Very transparent terms. I repaid early and didn't get charged any hidden fees. Highly recommended."</p>
+                    <p class="text-gray-600 text-sm mb-6">"Syaratnya transparan. Saya lunas lebih awal dan tidak kena denda aneh-aneh. Sangat direkomendasikan."</p>
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center font-bold">B</div>
                         <div>
@@ -435,30 +445,30 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
       <!-- FAQ Section -->
       <section class="py-20 bg-gray-900 text-white">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+            <h2 class="text-3xl font-bold text-center mb-12">Pertanyaan Sering Diajukan</h2>
             <div class="space-y-4">
                 <div class="border border-gray-700 rounded-xl p-4 hover:border-blue-500 transition-colors cursor-pointer group">
                     <div class="flex justify-between items-center">
-                        <h3 class="font-medium group-hover:text-blue-400">What documents do I need?</h3>
+                        <h3 class="font-medium group-hover:text-blue-400">Dokumen apa saja yang dibutuhkan?</h3>
                         <lucide-icon [img]="ChevronRight" class="w-5 h-5 text-gray-500 group-hover:text-blue-400"></lucide-icon>
                     </div>
-                    <p class="text-gray-400 text-sm mt-2 hidden group-hover:block animate-in fade-in slide-in-from-top-2">Just your KTP and a personal bank account in your name.</p>
+                    <p class="text-gray-400 text-sm mt-2 hidden group-hover:block animate-in fade-in slide-in-from-top-2">Cukup KTP elektronik (e-KTP) dan rekening bank pribadi atas nama sendiri.</p>
                 </div>
                 
                  <div class="border border-gray-700 rounded-xl p-4 hover:border-blue-500 transition-colors cursor-pointer group">
                     <div class="flex justify-between items-center">
-                        <h3 class="font-medium group-hover:text-blue-400">How long does approval take?</h3>
+                        <h3 class="font-medium group-hover:text-blue-400">Berapa lama proses persetujuan?</h3>
                         <lucide-icon [img]="ChevronRight" class="w-5 h-5 text-gray-500 group-hover:text-blue-400"></lucide-icon>
                     </div>
-                    <p class="text-gray-400 text-sm mt-2 hidden group-hover:block animate-in fade-in slide-in-from-top-2">Most applications are approved within 15 minutes during working hours.</p>
+                    <p class="text-gray-400 text-sm mt-2 hidden group-hover:block animate-in fade-in slide-in-from-top-2">Sebagian besar pengajuan disetujui dalam 15 menit selama jam kerja operasional.</p>
                 </div>
 
                  <div class="border border-gray-700 rounded-xl p-4 hover:border-blue-500 transition-colors cursor-pointer group">
                     <div class="flex justify-between items-center">
-                        <h3 class="font-medium group-hover:text-blue-400">Is my data safe?</h3>
+                        <h3 class="font-medium group-hover:text-blue-400">Apakah data saya aman?</h3>
                         <lucide-icon [img]="ChevronRight" class="w-5 h-5 text-gray-500 group-hover:text-blue-400"></lucide-icon>
                     </div>
-                    <p class="text-gray-400 text-sm mt-2 hidden group-hover:block animate-in fade-in slide-in-from-top-2">Yes, we use 256-bit encryption and are registered with OJK.</p>
+                    <p class="text-gray-400 text-sm mt-2 hidden group-hover:block animate-in fade-in slide-in-from-top-2">Ya, kami menggunakan enkripsi 256-bit dan terdaftar serta diawasi oleh OJK.</p>
                 </div>
             </div>
         </div>
