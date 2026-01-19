@@ -28,7 +28,7 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
             <div class="flex items-center gap-4 ml-auto">
               <button class="bg-gray-900 text-white px-5 py-2.5 rounded-full text-sm font-bold hover:bg-gray-800 transition-all shadow-lg shadow-gray-200 hover:shadow-xl flex items-center gap-2">
                 <lucide-icon [img]="Smartphone" class="w-4 h-4"></lucide-icon>
-                Get App
+                Unduh Aplikasi
               </button>
             </div>
           </div>
@@ -47,11 +47,11 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
                 Tersedia di iOS & Android
               </div>
               <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 tracking-tight mb-6 leading-tight">
-                Pinjaman Instan, <br>
+                Pinjaman Modal Usaha, <br>
                 <span class="bg-gradient-to-r from-blue-600 to-teal-500 bg-clip-text text-transparent">Peluang Tak Terbatas.</span>
               </h1>
               <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto lg:mx-0">
-                Dapatkan dana dalam hitungan menit bersama Plapofy. Bunga wajar, syarat transparan, dan asisten AI ramah yang siap membantu. Semua dari genggaman Anda.
+                Solusi pendanaan bisnis hingga <strong>Rp 15 Miliar</strong>. Bunga kompetitif mulai 0.8%, proses digital, dan didukung AI untuk persetujuan cepat.
               </p>
               
               <div class="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
@@ -311,10 +311,10 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
               <p class="text-gray-500 text-sm mb-4">Pilih rencana pembayaran yang sesuai anggaran Anda. Pelunasan lebih awal? Tanpa denda.</p>
                <ul class="space-y-2">
                 <li class="flex items-center gap-2 text-sm text-gray-600">
-                    <lucide-icon [img]="ChevronRight" class="w-4 h-4 text-purple-500"></lucide-icon> Bayar Kapan Saja
+                    <lucide-icon [img]="ChevronRight" class="w-4 h-4 text-purple-500"></lucide-icon> Pelunasan Kapan Saja
                 </li>
                 <li class="flex items-center gap-2 text-sm text-gray-600">
-                    <lucide-icon [img]="ChevronRight" class="w-4 h-4 text-purple-500"></lucide-icon> Limit hingga Rp 500 Juta
+                    <lucide-icon [img]="ChevronRight" class="w-4 h-4 text-purple-500"></lucide-icon> Limit hingga Rp 15 Miliar
                 </li>
               </ul>
             </div>
@@ -341,7 +341,7 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
                             </div>
                             <div>
                                 <h4 class="font-bold text-gray-900">Warga Negara Indonesia (WNI)</h4>
-                                <p class="text-sm text-gray-500">Memiliki KTP elektronik (e-KTP) yang aktif.</p>
+                                <p class="text-sm text-gray-500">Memiliki KTP elektronik (NIK sudah terintegrasi NPWP).</p>
                             </div>
                         </div>
 
@@ -350,8 +350,8 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
                                 <lucide-icon [img]="CheckCircle2" class="w-5 h-5"></lucide-icon>
                             </div>
                             <div>
-                                <h4 class="font-bold text-gray-900">Usia Produktif</h4>
-                                <p class="text-sm text-gray-500">Berusia antara 21 - 50 tahun saat pengajuan.</p>
+                                <h4 class="font-bold text-gray-900">Usaha / Pekerjaan Tetap</h4>
+                                <p class="text-sm text-gray-500">Memiliki usaha berjalan min. 1 tahun atau karyawan tetap.</p>
                             </div>
                         </div>
 
@@ -360,8 +360,8 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
                                 <lucide-icon [img]="CheckCircle2" class="w-5 h-5"></lucide-icon>
                             </div>
                             <div>
-                                <h4 class="font-bold text-gray-900">Penghasilan Tetap</h4>
-                                <p class="text-sm text-gray-500">Memiliki pekerjaan atau usaha dengan penghasilan rutin.</p>
+                                <h4 class="font-bold text-gray-900">Dokumen Legalitas</h4>
+                                <p class="text-sm text-gray-500">SIUP/NIB untuk badan usaha (Limit > 1 Miliar).</p>
                             </div>
                         </div>
 
@@ -442,7 +442,7 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
                         <lucide-icon [img]="Star" class="w-4 h-4 fill-current"></lucide-icon>
                         <lucide-icon [img]="Star" class="w-4 h-4 fill-current"></lucide-icon>
                     </div>
-                    <p class="text-gray-600 text-sm mb-6">"Sangat membantu saat kondisi darurat. Dana masuk ke rekening bahkan sebelum saya keluar dari rumah sakit. Benar-benar instan!"</p>
+                    <p class="text-gray-600 text-sm mb-6">"Sangat membantu untuk ekspansi cabang baru cafe saya. Dana 500 Juta cair cepat tanpa ribet jaminan aset fisik."</p>
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold">A</div>
                         <div>
@@ -503,7 +503,7 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
                         <h3 class="font-medium group-hover:text-blue-400">Dokumen apa saja yang dibutuhkan?</h3>
                         <lucide-icon [img]="ChevronRight" class="w-5 h-5 text-gray-500 group-hover:text-blue-400"></lucide-icon>
                     </div>
-                    <p class="text-gray-400 text-sm mt-2 hidden group-hover:block animate-in fade-in slide-in-from-top-2">Cukup KTP elektronik (e-KTP) dan rekening bank pribadi atas nama sendiri.</p>
+                    <p class="text-gray-400 text-sm mt-2 hidden group-hover:block animate-in fade-in slide-in-from-top-2">Cukup KTP elektronik dan Mutasi Rekening 3 bulan terakhir. Untuk PT/CV butuh Akta & NIB.</p>
                 </div>
                 
                  <div class="border border-gray-700 rounded-xl p-4 hover:border-blue-500 transition-colors cursor-pointer group">
