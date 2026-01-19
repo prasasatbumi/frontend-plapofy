@@ -19,12 +19,16 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
               <img src="/assets/logo.png" alt="Plapofy Logo" class="h-10 w-10 rounded-xl shadow-sm">
               <span class="text-xl font-bold bg-gradient-to-r from-blue-600 to-teal-500 bg-clip-text text-transparent">Plapofy</span>
             </div>
-            <div class="flex items-center gap-4">
-              <button routerLink="/login" class="text-gray-600 hover:text-blue-600 font-medium text-sm transition-colors">
-                Masuk
-              </button>
-              <button routerLink="/register" class="bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-700 transition-colors hidden sm:block">
-                Daftar Sekarang
+            <div class="hidden md:flex items-center gap-8 ml-8">
+              <a href="#about" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">Tentang</a>
+              <a href="#calculator" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">Simulasi</a>
+              <a href="#features" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">Keunggulan</a>
+              <a href="#faq" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">FAQ</a>
+            </div>
+            <div class="flex items-center gap-4 ml-auto">
+              <button class="bg-gray-900 text-white px-5 py-2.5 rounded-full text-sm font-bold hover:bg-gray-800 transition-all shadow-lg shadow-gray-200 hover:shadow-xl flex items-center gap-2">
+                <lucide-icon [img]="Smartphone" class="w-4 h-4"></lucide-icon>
+                Get App
               </button>
             </div>
           </div>
@@ -83,15 +87,20 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
       </section>
 
       <!-- Brand Story & Mascot Section (New) -->
-      <section class="py-16 bg-blue-50/50 border-b border-gray-100">
+      <section id="about" class="py-24 bg-blue-50/50 border-b border-gray-100 overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row items-center gap-12">
-                <div class="w-full md:w-1/3 flex justify-center">
-                    <div class="relative group cursor-pointer">
-                        <div class="absolute inset-0 bg-teal-200 rounded-full blur-2xl opacity-40 group-hover:opacity-60 transition-opacity"></div>
-                        <img src="/assets/mascot.png" alt="Plapofy Mascot" class="relative z-10 w-48 h-48 md:w-64 md:h-64 object-contain transition-transform transform group-hover:rotate-6 hover:scale-110 duration-300">
-                        <div class="absolute -bottom-4 right-0 bg-white px-4 py-1.5 rounded-full shadow-md text-xs font-bold text-teal-600 rotate-3 group-hover:rotate-0 transition-transform">
-                            Hi, I'm Platy! 👋
+            <div class="flex flex-col md:flex-row items-center gap-16 relative">
+                <!-- Mascot Container with corrected spacing/z-index -->
+                <div class="w-full md:w-1/3 flex justify-center relative z-10">
+                    <div class="relative group cursor-pointer p-8"> 
+                        <div class="absolute inset-0 bg-teal-200 rounded-full blur-3xl opacity-30 group-hover:opacity-50 transition-opacity scale-75"></div>
+                        <img src="/assets/mascot.png" alt="Plapofy Mascot" class="relative z-20 w-56 h-auto object-contain transition-transform transform group-hover:rotate-6 hover:scale-110 duration-300 drop-shadow-xl">
+                        
+                        <!-- Floating Badge -->
+                        <div class="absolute bottom-4 right-4 z-30 bg-white px-4 py-2 rounded-2xl shadow-lg border border-gray-100 transform rotate-3 group-hover:rotate-0 transition-all">
+                            <p class="text-xs font-bold text-teal-600 flex items-center gap-1">
+                                Hi, I'm Platy! <span class="text-lg">👋</span>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -248,7 +257,7 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
       </section>
 
       <!-- Product Features / Selling Points -->
-      <section class="py-20 bg-gray-50">
+      <section id="features" class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="text-center max-w-3xl mx-auto mb-16">
             <h2 class="text-3xl font-bold text-gray-900 mb-4">Mengapa Memilih Plapofy?</h2>
@@ -485,7 +494,7 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
       </section>
 
       <!-- FAQ Section -->
-      <section class="py-20 bg-gray-900 text-white">
+      <section id="faq" class="py-20 bg-gray-900 text-white">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-3xl font-bold text-center mb-12">Pertanyaan Sering Diajukan</h2>
             <div class="space-y-4">
