@@ -76,8 +76,8 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-100 rounded-full blur-3xl opacity-50 animate-pulse"></div>
                 <div class="absolute top-1/2 left-1/2 -translate-x-1/3 -translate-y-1/3 w-[400px] h-[400px] bg-teal-100 rounded-full blur-3xl opacity-50"></div>
                 
-                <!-- Mascot Image -->
-                 <img src="/assets/mascot.png" alt="Plapofy Mascot" class="relative z-10 w-full max-w-md drop-shadow-2xl hover:scale-105 transition-transform duration-500 mix-blend-multiply">
+                <!-- Mascot Image (Using Celebration/Hero Variant) -->
+                 <img src="/assets/celebrate.png" alt="Plapofy Mascot Celebration" class="relative z-10 w-full max-w-md drop-shadow-2xl hover:scale-105 transition-transform duration-500 mix-blend-multiply">
                  
 
             </div>
@@ -266,8 +266,11 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
 
           <div class="grid md:grid-cols-3 gap-8">
             <!-- Feature 1 -->
-            <div class="bg-white p-8 rounded-2xl border border-gray-100 hover:border-blue-200 transition-colors group shadow-sm">
-              <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 mb-6 group-hover:scale-110 transition-transform">
+            <div class="bg-white p-8 rounded-2xl border border-gray-100 hover:border-blue-200 transition-colors group shadow-sm relative overflow-hidden">
+               <!-- Decorative Rocket -->
+               <img src="/assets/rocket.png" class="absolute -right-4 -bottom-4 w-24 h-24 opacity-10 group-hover:opacity-20 group-hover:scale-110 transition-all duration-300 -rotate-12" alt="Rocket">
+               
+              <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 mb-6 group-hover:scale-110 transition-transform relative z-10">
                 <lucide-icon [img]="Zap" class="w-6 h-6"></lucide-icon>
               </div>
               <h3 class="text-xl font-bold text-gray-900 mb-2">Cair Instan dalam 5 Menit</h3>
@@ -328,7 +331,7 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <div class="order-2 md:order-1 relative">
                     <div class="absolute inset-0 bg-blue-100 rounded-full blur-3xl opacity-50 translate-x-12 translate-y-12"></div>
-                    <img src="/assets/mascot.png" alt="Requirements" class="relative z-10 w-full max-w-sm mx-auto drop-shadow-xl hover:rotate-3 transition-transform duration-500">
+                    <img src="/assets/calculate.png" alt="Requirements - Platy Calculating" class="relative z-10 w-full max-w-sm mx-auto drop-shadow-xl hover:rotate-3 transition-transform duration-500">
                 </div>
                 <div class="order-1 md:order-2">
                     <h2 class="text-3xl font-bold text-gray-900 mb-6">Siapa yang Bisa Mengajukan?</h2>
