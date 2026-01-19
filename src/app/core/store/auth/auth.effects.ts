@@ -28,7 +28,11 @@ export class AuthEffects {
             this.actions$.pipe(
                 ofType(AuthActions.loginSuccess),
                 tap(() => {
-                    this.router.navigate(['/dashboard']);
+                    const currentUrl = this.router.url;
+                    // Only redirect if on login or register page (or root/landing if intended, but user requested not to)
+                    if (currentUrl.includes('/login') || currentUrl.includes('/register')) {
+                        this.router.navigate(['/dashboard']);
+                    }
                 })
             ),
         { dispatch: false }
