@@ -94,7 +94,7 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
                 <div class="w-full md:w-1/3 flex justify-center relative z-10">
                     <div class="relative group cursor-pointer p-8"> 
                         <div class="absolute inset-0 bg-teal-200 rounded-full blur-3xl opacity-30 group-hover:opacity-50 transition-opacity scale-75"></div>
-                        <img src="/assets/mascot.png" alt="Plapofy Mascot" class="relative z-20 w-56 h-auto object-contain transition-transform transform group-hover:rotate-6 hover:scale-110 duration-300 drop-shadow-xl">
+                        <img src="/assets/celebrate.png" alt="Plapofy Mascot" class="relative z-20 w-56 h-auto object-contain transition-transform transform group-hover:rotate-6 hover:scale-110 duration-300 drop-shadow-xl">
                         
                         <!-- Floating Badge -->
                         <div class="absolute bottom-4 right-4 z-30 bg-white px-4 py-2 rounded-2xl shadow-lg border border-gray-100 transform rotate-3 group-hover:rotate-0 transition-all">
