@@ -269,6 +269,7 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
               </ul>
             </div>
         </div>
+        </div>
       </section>
 
       <!-- Requirements Section (New) -->
