@@ -584,7 +584,9 @@ export class LandingComponent {
   constructor() {
     this.plafondService.getPlafonds().subscribe({
       next: (data: Plafond[]) => {
-        this.productTiers.set(data);
+        // Sort tiers by maxAmount ascending to ensure logic works correctly
+        const sorted = [...data].sort((a, b) => a.maxAmount - b.maxAmount);
+        this.productTiers.set(sorted);
       },
       error: (err: any) => console.error('Failed to load products', err)
     });
@@ -630,8 +632,9 @@ export class LandingComponent {
     const tiers = this.productTiers();
     if (tiers.length === 0) return null;
 
-    // Find tier that covers the amount (use 0 as minAmount since it's deprecated)
-    return [...tiers].reverse().find(p => amount >= (p.minAmount ?? 0) && amount <= p.maxAmount) || tiers[0];
+    // Find first tier that covers the amount (Smallest to Largest check)
+    // Remove .reverse() so we don't default to the biggest one for small amounts
+    return tiers.find(p => amount >= (p.minAmount ?? 0) && amount <= p.maxAmount) || tiers[tiers.length - 1];
   });
 
   availableTenors = computed(() => {
@@ -659,7 +662,10 @@ export class LandingComponent {
   });
 
   selectTier(tier: Plafond) {
-    // Default to small amount since minAmount is deprecated
-    this.loanAmount.set(tier.minAmount ?? 1000000);
+    // Set amount to 50% of the tier's max limit to ensure it falls comfortably within the range
+    // This solves the issue where setting a small amount (like 1M) would just select the smallest tier (Starter)
+    // even if the user clicked "Prioritas".
+    const midPoint = tier.maxAmount * 0.5;
+    this.loanAmount.set(Math.max(tier.minAmount ?? 1000000, midPoint));
   }
 }
