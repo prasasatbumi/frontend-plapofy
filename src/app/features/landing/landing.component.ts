@@ -141,32 +141,34 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
             </div>
 
             <!-- Product Cards (Selection) -->
-             <div class="grid md:grid-cols-3 gap-6 mb-12">
+             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
                 <div *ngFor="let prod of productTiers()" 
                         (click)="selectTier(prod)"
-                        class="p-6 rounded-3xl border-2 transition-all duration-300 cursor-pointer relative overflow-hidden group"
-                        [class.border-blue-600]="prod.id === activeTier()?.id"
-                        [class.bg-blue-50]="prod.id === activeTier()?.id"
-                        [class.border-gray-100]="prod.id !== activeTier()?.id"
-                        [class.bg-white]="prod.id !== activeTier()?.id"
-                        [class.shadow-xl]="prod.id === activeTier()?.id"
-                        [class.shadow-sm]="prod.id !== activeTier()?.id"
-                        [class.scale-105]="prod.id === activeTier()?.id">
+                        class="p-5 rounded-2xl border-2 transition-all duration-300 cursor-pointer relative overflow-hidden hover:shadow-lg active:scale-[0.97]"
+                        [class.border-blue-600]="prod.id === selectedTier()?.id"
+                        [class.bg-blue-50]="prod.id === selectedTier()?.id"
+                        [class.border-gray-100]="prod.id !== selectedTier()?.id"
+                        [class.bg-white]="prod.id !== selectedTier()?.id"
+                        [class.shadow-xl]="prod.id === selectedTier()?.id"
+                        [class.shadow-sm]="prod.id !== selectedTier()?.id"
+                        [class.scale-[1.03]]="prod.id === selectedTier()?.id"
+                        [class.ring-4]="prod.id === selectedTier()?.id"
+                        [class.ring-blue-100]="prod.id === selectedTier()?.id">
                         
-                    <div class="flex justify-between items-start mb-4">
+                    <div class="flex justify-between items-start mb-3">
                         <div>
-                            <h4 class="font-bold text-xl text-gray-900" [class.text-blue-700]="prod.id === activeTier()?.id">{{ prod.name }}</h4>
-                            <p class="text-sm text-gray-500 mt-1">{{ prod.description }}</p>
+                            <h4 class="font-bold text-lg text-gray-900" [class.text-blue-700]="prod.id === selectedTier()?.id">{{ prod.name }}</h4>
+                            <p class="text-xs text-gray-500 mt-1">{{ prod.description }}</p>
                         </div>
-                            <div *ngIf="prod.id === activeTier()?.id" class="bg-blue-600 text-white p-1 rounded-full">
+                            <div *ngIf="prod.id === selectedTier()?.id" class="bg-blue-600 text-white p-1 rounded-full animate-bounce">
                                 <lucide-icon [img]="CheckCircle2" class="w-5 h-5"></lucide-icon>
                             </div>
                     </div>
                     
-                    <div class="space-y-3">
+                    <div class="space-y-2">
                         <div class="flex justify-between text-sm">
                             <span class="text-gray-500">Plafond</span>
-                            <span class="font-bold text-gray-900">{{ formatLimit(prod) }}</span>
+                            <span class="font-bold" [class.text-blue-700]="prod.id === selectedTier()?.id" [class.text-gray-900]="prod.id !== selectedTier()?.id">{{ formatLimit(prod) }}</span>
                         </div>
                         <div class="flex justify-between text-sm">
                             <span class="text-gray-500">Bunga</span>
@@ -174,18 +176,20 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
                         </div>
                     </div>
 
-                    <div class="mt-6 w-full py-2 rounded-xl text-center text-sm font-bold transition-colors"
-                        [class.bg-blue-600]="prod.id === activeTier()?.id"
-                        [class.text-white]="prod.id === activeTier()?.id"
-                        [class.bg-gray-100]="prod.id !== activeTier()?.id"
-                        [class.text-gray-500]="prod.id !== activeTier()?.id">
-                        {{ prod.id === activeTier()?.id ? 'Sedang Dipilih' : 'Pilih ' + prod.name }}
+                    <div class="mt-4 w-full py-2.5 rounded-xl text-center text-sm font-bold transition-all duration-300"
+                        [class.bg-blue-600]="prod.id === selectedTier()?.id"
+                        [class.text-white]="prod.id === selectedTier()?.id"
+                        [class.shadow-md]="prod.id === selectedTier()?.id"
+                        [class.bg-gray-100]="prod.id !== selectedTier()?.id"
+                        [class.text-gray-500]="prod.id !== selectedTier()?.id"
+                        [class.hover:bg-gray-200]="prod.id !== selectedTier()?.id">
+                        {{ prod.id === selectedTier()?.id ? 'Sedang Dipilih' : 'Pilih ' + prod.name }}
                     </div>
                 </div>
             </div>
 
             <!-- Calculator (Shown based on selection) -->
-            <div *ngIf="activeTier()" class="max-w-4xl mx-auto bg-white p-8 md:p-10 rounded-[2.5rem] border border-gray-100 shadow-2xl shadow-blue-100/50">
+            <div *ngIf="selectedTier()" class="max-w-4xl mx-auto bg-white p-8 md:p-10 rounded-[2.5rem] border border-gray-100 shadow-2xl shadow-blue-100/50">
                 <div class="grid md:grid-cols-2 gap-12 items-center">
                     
                     <!-- Controls -->
@@ -196,14 +200,14 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
                                 <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold group-focus-within:text-blue-600">Rp</span>
                                 <input type="number" [(ngModel)]="loanAmount" 
                                     class="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-200 rounded-2xl text-2xl font-bold text-gray-900 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all outline-none" 
-                                    [min]="activeTier()?.minAmount || 0" [max]="activeTier()?.maxAmount || 0">
+                                    [min]="selectedTier()?.minAmount || 0" [max]="selectedTier()?.maxAmount || 0">
                             </div>
                             <input type="range" [(ngModel)]="loanAmount" 
-                                [min]="activeTier()?.minAmount || 0" [max]="activeTier()?.maxAmount || 0" step="100000000" 
+                                [min]="selectedTier()?.minAmount || 0" [max]="selectedTier()?.maxAmount || 0" step="1000000" 
                                 class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer mt-4 accent-blue-600">
                             <div class="mt-2 flex justify-between text-xs text-gray-400 font-medium">
-                                <span>{{ (activeTier()?.minAmount || 0) | currency:'Rp ':'symbol':'1.0-0' }}</span>
-                                <span>{{ (activeTier()?.maxAmount || 0) | currency:'Rp ':'symbol':'1.0-0' }}</span>
+                                <span>{{ (selectedTier()?.minAmount || 0) | currency:'Rp ':'symbol':'1.0-0' }}</span>
+                                <span>{{ (selectedTier()?.maxAmount || 0) | currency:'Rp ':'symbol':'1.0-0' }}</span>
                             </div>
                         </div>
 
@@ -577,27 +581,30 @@ export class LandingComponent {
   readonly CheckCircle2 = CheckCircle2;
 
   // State
-  loanAmount = signal(500000000); // 500 Juta default
+  loanAmount = signal(1000000);
   selectedTenor = signal(12);
-  productTiers = signal<Plafond[]>([]); // Use signal for reactivity
+  productTiers = signal<Plafond[]>([]);
+  selectedTier = signal<Plafond | null>(null); // Explicit user selection
 
   constructor() {
     this.plafondService.getPlafonds().subscribe({
       next: (data: Plafond[]) => {
-        // Sort tiers by maxAmount ascending to ensure logic works correctly
         const sorted = [...data].sort((a, b) => a.maxAmount - b.maxAmount);
         this.productTiers.set(sorted);
+        // Auto-select first tier on load
+        if (sorted.length > 0) {
+          this.selectedTier.set(sorted[0]);
+          this.loanAmount.set(sorted[0].minAmount ?? 1000000);
+        }
       },
       error: (err: any) => console.error('Failed to load products', err)
     });
 
-    // Effect to valid selected tenor
+    // Validate selected tenor when tier changes
     effect(() => {
       const available = this.availableTenors();
       const current = this.selectedTenor();
       if (available.length > 0 && !available.includes(current)) {
-        // Default to the first available tenor if the current one is invalid
-        // Or prioritize 12 if available, otherwise first
         if (available.includes(12)) {
           this.selectedTenor.set(12);
         } else {
@@ -607,45 +614,31 @@ export class LandingComponent {
     }, { allowSignalWrites: true });
   }
 
-  // Helper for template to get interest rate
   getInterestRate(plafond: Plafond, tenor: number): number {
     return plafond.interests.find(i => i.tenor === tenor)?.interestRate || 0;
   }
 
-  // Helper for formatting Credit Limit (minAmount deprecated)
   formatLimit(plafond: Plafond): string {
     const format = (val: number) => {
       if (val >= 1000000000) {
-        // Convert to Billions (Miliar)
         return (val / 1000000000).toLocaleString('id-ID', { maximumFractionDigits: 1 }).replace('.', ',') + ' M';
       }
-      // Convert to Millions (Juta)
       return (val / 1000000).toLocaleString('id-ID', { maximumFractionDigits: 0 }) + ' Jt';
     };
-    // Only show maxAmount (Credit Limit) since minAmount is deprecated
     return `Up to ${format(plafond.maxAmount)}`;
   }
 
-  // Computed Values
-  activeTier = computed(() => {
-    const amount = this.loanAmount();
-    const tiers = this.productTiers();
-    if (tiers.length === 0) return null;
-
-    // Find first tier that covers the amount (Smallest to Largest check)
-    // Remove .reverse() so we don't default to the biggest one for small amounts
-    return tiers.find(p => amount >= (p.minAmount ?? 0) && amount <= p.maxAmount) || tiers[tiers.length - 1];
-  });
+  // activeTier is now just an alias for selectedTier (explicit, not derived from amount)
+  activeTier = computed(() => this.selectedTier());
 
   availableTenors = computed(() => {
-    const tier = this.activeTier();
+    const tier = this.selectedTier();
     if (!tier || !tier.interests) return [];
-    // Return sorted unique tenors
     return [...new Set(tier.interests.map(i => i.tenor))].sort((a, b) => a - b);
   });
 
   activeRate = computed(() => {
-    const tier = this.activeTier();
+    const tier = this.selectedTier();
     if (!tier) return 0;
     const tenor = this.selectedTenor();
     return this.getInterestRate(tier, tenor);
@@ -655,17 +648,14 @@ export class LandingComponent {
     const principal = this.loanAmount();
     const ratePercent = this.activeRate();
     const tenor = this.selectedTenor();
-
     const totalInterest = principal * (ratePercent / 100);
     const totalPayment = principal + totalInterest;
     return totalPayment / tenor;
   });
 
   selectTier(tier: Plafond) {
-    // Set amount to 50% of the tier's max limit to ensure it falls comfortably within the range
-    // This solves the issue where setting a small amount (like 1M) would just select the smallest tier (Starter)
-    // even if the user clicked "Prioritas".
-    const midPoint = tier.maxAmount * 0.5;
-    this.loanAmount.set(Math.max(tier.minAmount ?? 1000000, midPoint));
+    this.selectedTier.set(tier);
+    // Reset loan amount to the tier's minimum when switching products
+    this.loanAmount.set(tier.minAmount ?? 1000000);
   }
 }
