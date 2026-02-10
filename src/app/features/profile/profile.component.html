@@ -1,0 +1,226 @@
+    <app-layout>
+      <div class="mb-8">
+         <h1 class="text-2xl font-bold text-gray-900">My Profile</h1>
+         <p class="text-gray-500 mt-1">Manage your personal information.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Left Column -->
+        <div class="lg:col-span-1 space-y-6">
+           <!-- Profile Card -->
+           <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col items-center text-center">
+             <div class="w-24 h-24 rounded-full bg-blue-100 flex items-center justify-center mb-4 text-blue-600">
+               <lucide-icon [img]="User" class="w-12 h-12"></lucide-icon>
+             </div>
+             <h2 class="text-xl font-bold text-gray-900">{{ profile()?.fullName || profile()?.user?.username }}</h2>
+             <p class="text-sm text-gray-500">{{ profile()?.user?.email }}</p>
+                Active Customer
+             <div class="mt-2 px-3 py-1 text-xs font-bold rounded-full uppercase tracking-wide"
+                [ngClass]="{
+                    'bg-green-100 text-green-700': profile()?.kycStatus === 'VERIFIED',
+                    'bg-yellow-100 text-yellow-700': profile()?.kycStatus === 'PENDING',
+                    'bg-red-100 text-red-700': !profile()?.kycStatus || profile()?.kycStatus === 'UNVERIFIED' || profile()?.kycStatus === 'REJECTED'
+                }">
+                KYC: {{ profile()?.kycStatus || 'UNVERIFIED' }}
+             </div>
+           </div>
+           
+           <!-- Active Loan Card -->
+           @if (activeLoan(); as loan) {
+             <div class="bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl shadow-lg p-6 text-white relative overflow-hidden">
+               <!-- Decorative Circles -->
+               <div class="absolute top-0 right-0 -mr-8 -mt-8 w-24 h-24 rounded-full bg-white opacity-10"></div>
+               <div class="absolute bottom-0 left-0 -ml-8 -mb-8 w-24 h-24 rounded-full bg-white opacity-10"></div>
+
+               <div class="flex items-center gap-2 mb-4">
+                 <lucide-icon [img]="CreditCard" class="w-5 h-5 text-blue-200"></lucide-icon>
+                 <h3 class="font-bold text-lg">Active Loan</h3>
+                 <span class="ml-auto text-xs bg-white/20 px-2 py-1 rounded uppercase tracking-wider">{{ loan.currentStatus }}</span>
+               </div>
+
+               <div class="space-y-4">
+                 <div>
+                   <p class="text-blue-100 text-xs uppercase tracking-wide mb-1">Monthly Installment</p>
+                   <p class="text-2xl font-bold">{{ loan.monthlyInstallment | currency:'IDR':'symbol':'1.0-0' }}</p>
+                 </div>
+
+                 <div class="grid grid-cols-2 gap-4">
+                   <div>
+                     <p class="text-blue-100 text-xs uppercase tracking-wide mb-1">Next Due</p>
+                     <div class="flex items-center gap-1.5">
+                       <lucide-icon [img]="Calendar" class="w-4 h-4 text-blue-200"></lucide-icon>
+                       <span class="font-medium">{{ loan.nextDueDate ? (loan.nextDueDate | date:'dd MMM yyyy') : '-' }}</span>
+                     </div>
+                   </div>
+                   <div>
+                     <p class="text-blue-100 text-xs uppercase tracking-wide mb-1">Remaining</p>
+                     <div class="flex items-center gap-1.5">
+                       <lucide-icon [img]="Clock" class="w-4 h-4 text-blue-200"></lucide-icon>
+                       <span class="font-medium">{{ loan.remainingTenor !== null ? loan.remainingTenor + ' Months' : '-' }}</span>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           }
+
+           <!-- Missing Fields Alert -->
+           @if (missingFields().length > 0) {
+             <div class="bg-orange-50 border border-orange-200 rounded-xl p-4">
+               <div class="flex items-start gap-2 text-orange-800">
+                 <lucide-icon [img]="AlertCircle" class="w-5 h-5 flex-shrink-0 mt-0.5"></lucide-icon>
+                 <div>
+                   <h4 class="font-bold text-sm">Action Required</h4>
+                   <p class="text-xs mt-1 text-orange-700">Please complete the following details to apply for a loan:</p>
+                   <ul class="list-disc list-inside mt-2 text-xs text-orange-700">
+                     @for (field of missingFields(); track field) {
+                       <li class="capitalize">{{ field.replace('_', ' ') }}</li>
+                     }
+                   </ul>
+                 </div>
+               </div>
+             </div>
+           }
+        </div>
+
+        <!-- Right Column (Edit Form) -->
+        <div class="lg:col-span-2">
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <h3 class="font-bold text-gray-900 mb-6 flex items-center gap-2 pb-4 border-b border-gray-100">
+               <lucide-icon [img]="User" class="w-5 h-5 text-gray-400"></lucide-icon>
+               Personal Details
+            </h3>
+            
+            <form [formGroup]="profileForm" (ngSubmit)="saveProfile()" class="space-y-6">
+               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <!-- Full Name -->
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                    <input formControlName="fullName" type="text" 
+                      class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  </div>
+                  
+                  <!-- Phone Number -->
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                    <div class="relative">
+                      <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                         <lucide-icon [img]="Phone" class="w-4 h-4 text-gray-400"></lucide-icon>
+                      </div>
+                      <input formControlName="phoneNumber" type="text" placeholder="08xxxxxxxx"
+                        class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                  </div>
+
+                  <!-- Date of Birth -->
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+                    <div class="relative">
+                       <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                         <lucide-icon [img]="Calendar" class="w-4 h-4 text-gray-400"></lucide-icon>
+                      </div>
+                      <input formControlName="dateOfBirth" type="date" 
+                        class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                  </div>
+               </div>
+
+               <!-- Bank Details Section -->
+               <div class="border-t border-gray-100 pt-6">
+                 <h4 class="font-medium text-gray-900 mb-4 flex items-center gap-2">
+                   <lucide-icon [img]="Banknote" class="w-4 h-4 text-gray-400"></lucide-icon>
+                   Bank Information
+                 </h4>
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                   <!-- Bank Name -->
+                   <div>
+                     <label class="block text-sm font-medium text-gray-700 mb-1">Bank Name</label>
+                     <input formControlName="bankName" type="text" placeholder="e.g. BCA, Mandiri"
+                       class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                   </div>
+                   <!-- Account Number -->
+                   <div>
+                     <label class="block text-sm font-medium text-gray-700 mb-1">Account Number</label>
+                     <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <lucide-icon [img]="CreditCard" class="w-4 h-4 text-gray-400"></lucide-icon>
+                       </div>
+                       <input formControlName="bankAccountNumber" type="text" placeholder="1234567890"
+                         class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                     </div>
+                   </div>
+                 </div>
+               </div>
+
+               <!-- Address -->
+               <div class="border-t border-gray-100 pt-6">
+                 <label class="block text-sm font-medium text-gray-700 mb-1">Detailed Address</label>
+                 <div class="relative">
+                     <div class="absolute top-3 left-3 pointer-events-none">
+                         <lucide-icon [img]="MapPin" class="w-4 h-4 text-gray-400"></lucide-icon>
+                     </div>
+                     <textarea formControlName="address" rows="3" 
+                       class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+                 </div>
+               </div>
+
+               <div class="flex justify-end pt-4">
+                 <button type="submit" 
+                   [disabled]="profileForm.invalid || isLoading()"
+                   class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors flex items-center font-medium shadow-sm shadow-blue-200">
+                   @if (isLoading()) {
+                      <span>Saving...</span>
+                   } @else {
+                      <lucide-icon [img]="Save" class="w-4 h-4 mr-2"></lucide-icon>
+                      Save Changes
+                   }
+                 </button>
+               </div>
+            </form>
+          </div>
+
+          <!-- KYC Verification Section -->
+          @if (profile()?.kycStatus !== 'VERIFIED' && profile()?.kycStatus !== 'PENDING') {
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mt-8">
+                <h3 class="font-bold text-gray-900 mb-6 flex items-center gap-2 pb-4 border-b border-gray-100">
+                   <lucide-icon [img]="formattedIcon('ShieldCheck')" class="w-5 h-5 text-gray-400"></lucide-icon>
+                   Identity Verification (KYC)
+                </h3>
+                
+                <form [formGroup]="kycForm" (ngSubmit)="submitKyc()" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- KTP Upload -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Upload KTP</label>
+                            <input type="file" (change)="onFileSelected($event, 'ktpImage')" accept="image/*"
+                                class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                        </div>
+                         <!-- Selfie Upload -->
+                         <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Upload Selfie</label>
+                            <input type="file" (change)="onFileSelected($event, 'selfieImage')" accept="image/*"
+                                class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                        </div>
+                    </div>
+                    <div class="flex justify-end pt-4">
+                        <button type="submit" 
+                          [disabled]="kycForm.invalid || isKycLoading()"
+                          class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors flex items-center font-medium shadow-sm">
+                          @if (isKycLoading()) {
+                             <span>Uploading...</span>
+                          } @else {
+                             Submit KYC
+                          }
+                        </button>
+                    </div>
+                </form>
+            </div>
+          } @else if (profile()?.kycStatus === 'PENDING') {
+              <div class="mt-8 bg-yellow-50 border border-yellow-200 rounded-xl p-6 text-center">
+                  <h3 class="text-yellow-800 font-bold text-lg">Verification in Progress</h3>
+                  <p class="text-yellow-600 mt-2">Your KYC documents are currently being reviewed by our team.</p>
+              </div>
+          }
+        </div>
+      </div>
+    </app-layout>

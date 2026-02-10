@@ -1,0 +1,62 @@
+
+> frontend@0.0.0 build
+> ng build
+
+[33m❯[39m Building...
+[32m✔[39m Building...
+Application bundle generation failed. [11.341 seconds]
+
+[1m[33m[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mTS-998113: PercentPipe is not used within the template of AnalyticalDashboardComponent[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/dashboard/analytical-dashboard.component.ts:14:90:
+[37m      14 │ ...eAngularModule, CurrencyPipe, DatePipe, [32mPercentPipe[37m, FormsModule],
+         ╵                                            [32m~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'Router' does not exist on type 'Promise<typeof import("C:/Users/prasa/Desktop/BootcampITDP12/finprov2 - Copy/frontend-plapofy/node_modules/@angular/router/index")>'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/core/components/notification-center/notification-center.component.ts:73:52:
+[37m      73 │   private router = inject(import('@angular/router').[32mRouter[37m);
+         ╵                                                     [32m~~~~~~[0m
+
+  Did you forget to use 'await'?
+
+    src/app/core/components/notification-center/notification-center.component.ts:73:52:
+[37m      73 │   private router = inject(import('@angular/router').[32mRouter[37m);
+         ╵                                                     [32m~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2571: Object is of type 'unknown'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/core/components/notification-center/notification-center.component.ts:104:6:
+[37m      104 │       [32mthis.router[37m.navigate(['/loans'], { queryParams: { search: l...
+          ╵       [32m~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'ActivatedRoute' does not exist on type 'Promise<typeof import("C:/Users/prasa/Desktop/BootcampITDP12/finprov2 - Copy/frontend-plapofy/node_modules/@angular/router/index")>'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/loans/loan-application.component.ts:249:53:
+[37m      249 │ ...private route = inject(import('@angular/router').[32mActivatedRoute[37m);
+          ╵                                                     [32m~~~~~~~~~~~~~~[0m
+
+  Did you forget to use 'await'?
+
+    src/app/features/loans/loan-application.component.ts:249:53:
+[37m      249 │ ...private route = inject(import('@angular/router').[32mActivatedRoute[37m);
+          ╵                                                     [32m~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2571: Object is of type 'unknown'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/loans/loan-application.component.ts:313:8:
+[37m      313 │         [32mthis.route[37m.queryParams.subscribe(params => {
+          ╵         [32m~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'params' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/loans/loan-application.component.ts:313:41:
+[37m      313 │         this.route.queryParams.subscribe([32mparams[37m => {
+          ╵                                          [32m~~~~~~[0m
+
+[39m[22m
