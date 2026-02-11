@@ -141,7 +141,7 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
             </div>
 
             <!-- Product Cards (Selection) -->
-             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-6xl mx-auto">
                 <div *ngFor="let prod of productTiers()" 
                         (click)="selectTier(prod)"
                         class="p-5 rounded-2xl border-2 transition-all duration-300 cursor-pointer relative overflow-hidden hover:shadow-lg active:scale-[0.97]"
