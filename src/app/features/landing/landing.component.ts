@@ -660,22 +660,24 @@ export class LandingComponent {
     this.loanAmount.set(tier.minAmount ?? 1000000);
   }
 
-  // Dynamic lowest monthly rate for marketing text
+  // Dynamic lowest monthly rate
   minMonthlyRate = computed(() => {
     const tiers = this.productTiers();
-    if (tiers.length === 0) return 0.5; // Fallback default
+    if (tiers.length === 0) return 0.5;
 
-    let minRate = Infinity;
+    let minMonthly = Infinity;
     let found = false;
 
     tiers.forEach(t => {
       if (t.interests) {
         t.interests.forEach(i => {
-          // Assuming backend sends Annual Rate (e.g. 6.0 for 6%).
-          // If rate > 1, it's likely Annual. If < 1, it's likely Monthly.
-          // Based on screenshot "8% /thn", the value is likely 8.
-          if (i.interestRate < minRate) {
-            minRate = i.interestRate;
+          // Normalize to monthly rate: rate / tenor
+          // Example: 
+          // 1 month, 3% -> 3 / 1 = 3% / month
+          // 12 months, 6% -> 6 / 12 = 0.5% / month
+          const monthly = i.interestRate / i.tenor;
+          if (monthly < minMonthly) {
+            minMonthly = monthly;
             found = true;
           }
         });
@@ -683,12 +685,6 @@ export class LandingComponent {
     });
 
     if (!found) return 0.5;
-
-    // Convert Annual to Monthly if > 1 (Simple heuristic)
-    // If minRate is 6 (6%), monthly is 0.5%.
-    if (minRate > 1) {
-      return minRate / 12;
-    }
-    return minRate;
+    return minMonthly;
   });
 }
