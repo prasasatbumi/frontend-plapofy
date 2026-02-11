@@ -298,14 +298,14 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
               <h3 class="text-xl font-bold text-gray-900 mb-2">Bunga Fair & Transparan</h3>
               <p class="text-gray-500 text-sm mb-4">Apa yang Anda lihat di simulasi adalah apa yang Anda bayar. Tanpa biaya provisi tersembunyi atau denda jebakan.</p>
               <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 shadow-sm">
-                  <div class="flex justify-between items-center mb-2">
-                    <span class="text-sm text-gray-500">Monthly Rate</span>
-                    <span class="text-lg font-bold text-teal-600">0.8% - 1.5%</span>
-                  </div>
-                  <div class="flex justify-between items-center">
-                    <span class="text-sm text-gray-500">Tenure</span>
-                    <span class="text-sm font-medium text-gray-900">3, 6, 12 Months</span>
-                  </div>
+                  <div class="flex justify-between items-center py-3 border-b border-gray-100">
+                <span class="text-gray-600">Bunga Flat</span>
+                <span class="text-lg font-bold text-teal-600">Mulai 0.5% / bulan</span>
+              </div>
+              <div class="flex justify-between items-center py-3">
+                <span class="text-gray-600">Tenor</span>
+                <span class="text-sm font-medium text-gray-900">1, 3, 6, 12 Bulan</span>
+              </div>
               </div>
             </div>
 
