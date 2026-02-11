@@ -300,7 +300,7 @@ import { PlafondService, Plafond } from '../../core/services/plafond.service';
               <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 shadow-sm">
                   <div class="flex justify-between items-center py-3 border-b border-gray-100">
                 <span class="text-gray-600">Bunga Flat</span>
-                <span class="text-lg font-bold text-teal-600">Mulai 0.5% / bulan</span>
+                <span class="text-lg font-bold text-teal-600">Mulai {{ minMonthlyRate() | number:'1.1-2' }}% / bulan</span>
               </div>
               <div class="flex justify-between items-center py-3">
                 <span class="text-gray-600">Tenor</span>
@@ -659,4 +659,36 @@ export class LandingComponent {
     // Reset loan amount to the tier's minimum when switching products
     this.loanAmount.set(tier.minAmount ?? 1000000);
   }
+
+  // Dynamic lowest monthly rate for marketing text
+  minMonthlyRate = computed(() => {
+    const tiers = this.productTiers();
+    if (tiers.length === 0) return 0.5; // Fallback default
+
+    let minRate = Infinity;
+    let found = false;
+
+    tiers.forEach(t => {
+      if (t.interests) {
+        t.interests.forEach(i => {
+          // Assuming backend sends Annual Rate (e.g. 6.0 for 6%).
+          // If rate > 1, it's likely Annual. If < 1, it's likely Monthly.
+          // Based on screenshot "8% /thn", the value is likely 8.
+          if (i.interestRate < minRate) {
+            minRate = i.interestRate;
+            found = true;
+          }
+        });
+      }
+    });
+
+    if (!found) return 0.5;
+
+    // Convert Annual to Monthly if > 1 (Simple heuristic)
+    // If minRate is 6 (6%), monthly is 0.5%.
+    if (minRate > 1) {
+      return minRate / 12;
+    }
+    return minRate;
+  });
 }
